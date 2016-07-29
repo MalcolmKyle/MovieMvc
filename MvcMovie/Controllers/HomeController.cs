@@ -15,14 +15,14 @@ namespace MvcMovie.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Description of my site and the progress.";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Malcolm's contact page.";
 
             return View();
         }

@@ -4,4 +4,22 @@
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<p>This CRUD application was set up for practice using a database in a code-first set up.<br />
+    I used a walk-through from Microsoft to explore my C# and .NET skills with creating a web application.<br />
+    The tutorial comes from <a href="https://docs.asp.net/en/latest/tutorials/first-mvc-app/index.html">HERE</a>.</p>
+
+<p>A few of the main difficulties I had when createing this site were:
+    <ul>
+        <li>Understanding exactly what a MVC application was and how the individual pieces worked together.<br />
+            Which can be explained <a href="https://msdn.microsoft.com/en-us/library/dd381412(v=vs.108).aspx">HERE</a>.</li>
+            <li><ul>
+                <li>M - Model: Model objects are the parts of the application that implement the logic for the application's data domain.<br />
+                Often, model objects retrieve and store model state in a database. For example, a Product object might retrieve information from a database, operate on it, and then write updated information back to a Products table in a SQL Server database. </li>
+                <li>V - View: Views are the components that display the application's user interface (UI). <br />
+                Typically, this UI is created from the model data. An example would be an edit view of a Products table that displays text boxes, drop-down lists, and check boxes based on the current state of a Product object.</li>
+                <li>C - Controller: Controllers are the components that handle user interaction, work with the model, and ultimately select a view to render that displays UI. <br />
+                In an MVC application, the view only displays information; the controller handles and responds to user input and interaction. For example, the controller handles query-string values, and passes these values to the model, which in turn might use these values to query the database.</li>
+            </ul></li>
+        <li>Deploying the local application to azure(work in progress)</li>
+        <li>Pushing all of files to github was a tremendous help! I found a tutorial which made it super easy to do. Now all I have to do is inside of VS is push the changes and they are directly updated inside of my repository.</li>
+    </ul></p>

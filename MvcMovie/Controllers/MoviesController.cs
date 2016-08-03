@@ -14,18 +14,21 @@ namespace MvcMovie.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
        
         // GET: Movies
-        public ActionResult Index(string movieGenre,string searchString)
+        public ActionResult Index(string sortOrder,string movieGenre,string searchString)
         {
-            //  Use LINQ to get  list of genre's
-            IQueryable<string> genreQuery = from m in db.Movies
-                                            orderby m.Genre
-                                            select m.Genre;
-
+           
+            //  Create sorting option for Title, Genre, Date, and Price
+            ViewBag.TitleSortParam = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewBag.DateSortParam = sortOrder == "Date" ? "date_dec" : "Date";
+            ViewBag.GenreSortParam = sortOrder == "genre" ? "genre_desc" : "genre";
+            ViewBag.PriceSortParam = sortOrder == "price" ? "price_desc" : "price";
+            
             //   LINQ query to select the movies - only defined; has not been ran against the database
             // LINQ (https://msdn.microsoft.com/en-us/library/mt693024.aspx)
             // Make sure you include System.Linq
 
             var movies = from m in db.Movies select m;
+
 
             // Search for a title  and return that list
             if (!String.IsNullOrEmpty(searchString))
@@ -39,10 +42,44 @@ namespace MvcMovie.Controllers
                 movies = movies.Where(x => x.Genre == movieGenre);
             }
 
+            //  Case switch on sorting order
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    movies = movies.OrderByDescending(s => s.Title);
+                    break;
+                case "Date":
+                    movies = movies.OrderBy(s => s.ReleaseDate);
+                    break;
+                case "date_desc":
+                    movies = movies.OrderByDescending(s => s.ReleaseDate);
+                    break;
+                case "genre":
+                    movies = movies.OrderBy(s => s.Genre);
+                    break;
+                case "genre_desc":
+                    movies = movies.OrderByDescending(s => s.Genre);
+                    break;
+                case "price":
+                    movies = movies.OrderBy(s => s.Price);
+                    break;
+                case "price_desc":
+                    movies = movies.OrderByDescending(s => s.Price);
+                    break;
+                default:
+                    movies = movies.OrderBy(s => s.Title);
+                    break;
+                
+            }
+
+            //  Use LINQ to get  list of genre's
+            IQueryable<string> genreQuery = from m in db.Movies
+                                            select m.Genre;
+
             var movieGenreVM = new MovieGenericViewModel();
             movieGenreVM.genres = new SelectList(genreQuery.Distinct().ToList());
             movieGenreVM.movies = movies.ToList();
-
+            
             return View(movieGenreVM);
         }
 

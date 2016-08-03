@@ -9,29 +9,28 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<form method="get">
+<form method="get" action="/Movies/Index">
     <p>
-        Filter Genres: <select>
-            <option @Html.DropDownListFor(m=>m.genres,Model.genres,new { @class = "moveGenre" })></option>
+        <select @Html.DropDownListFor(m=>m.movieGenre,Model.genres,"Filter Genre")
         </select>
         Search Title: <input type="text" name="SearchString" />
         <input type="submit" value="Search" />
     </p>
 </form>
-
+<!--  model => model.movies[0].Title   -->
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.movies[0].Title)
+            @Html.ActionLink("Title","Index",new {sortOrder = ViewBag.TitleSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.movies[0].ReleaseDate)
+            @Html.ActionLink("Release Date","Index",new { sortOrder = ViewBag.DateSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.movies[0].Genre)
+            @Html.ActionLink("Genre","Index",new { sortOrder = ViewBag.GenreSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.movies[0].Price)
+            @Html.ActionLink("Price","Index",new { sortOrder = ViewBag.PriceSortParam })
         </th>
         <th></th>
     </tr>

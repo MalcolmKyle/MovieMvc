@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MvcMovie.Models;
 
@@ -13,11 +12,38 @@ namespace MvcMovie.Controllers
     public class MoviesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
+       
         // GET: Movies
-        public ActionResult Index()
+        public ActionResult Index(string movieGenre,string searchString)
         {
-            return View(db.Movies.ToList());
+            //  Use LINQ to get  list of genre's
+            IQueryable<string> genreQuery = from m in db.Movies
+                                            orderby m.Genre
+                                            select m.Genre;
+
+            //   LINQ query to select the movies - only defined; has not been ran against the database
+            // LINQ (https://msdn.microsoft.com/en-us/library/mt693024.aspx)
+            // Make sure you include System.Linq
+
+            var movies = from m in db.Movies select m;
+
+            // Search for a title  and return that list
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(s => s.Title.Contains(searchString));
+            }
+
+            // Search for movie genres
+            if (!String.IsNullOrEmpty(movieGenre))
+            {
+                movies = movies.Where(x => x.Genre == movieGenre);
+            }
+
+            var movieGenreVM = new MovieGenericViewModel();
+            movieGenreVM.genres = new SelectList(genreQuery.Distinct().ToList());
+            movieGenreVM.movies = movies.ToList();
+
+            return View(movieGenreVM);
         }
 
         // GET: Movies/Details/5

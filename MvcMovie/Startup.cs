@@ -1,4 +1,5 @@
 ﻿using Microsoft.Owin;
+using MvcMovie.Models;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(MvcMovie.Startup))]

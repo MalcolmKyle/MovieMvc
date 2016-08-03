@@ -1,32 +1,42 @@
-﻿@model IEnumerable<MvcMovie.Models.Movie>
-
+﻿@model MvcMovie.Models.MovieGenericViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Movies List";
 }
 
-<h2>Index</h2>
+<h2>Movies List</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+<form method="get">
+    <p>
+        Filter Genres: <select>
+            <option @Html.DropDownListFor(m=>m.genres,Model.genres,new { @class = "moveGenre" })></option>
+        </select>
+        Search Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.movies[0].Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ReleaseDate)
+            @Html.DisplayNameFor(model => model.movies[0].ReleaseDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Genre)
+            @Html.DisplayNameFor(model => model.movies[0].Genre)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Price)
+            @Html.DisplayNameFor(model => model.movies[0].Price)
         </th>
         <th></th>
     </tr>
-
-@foreach (var item in Model) {
+    <tbody>
+@foreach (var item in Model.movies) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
@@ -47,5 +57,5 @@
         </td>
     </tr>
 }
-
+</tbody>
 </table>

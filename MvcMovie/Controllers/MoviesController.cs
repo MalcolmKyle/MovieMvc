@@ -19,10 +19,10 @@ namespace MvcMovie.Controllers
            
             //  Create sorting option for Title, Genre, Date, and Price
             ViewBag.TitleSortParam = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
-            ViewBag.DateSortParam = sortOrder == "Date" ? "date_dec" : "Date";
+            ViewBag.DateSortParam = sortOrder == "date" ? "date_dec" : "date";
             ViewBag.GenreSortParam = sortOrder == "genre" ? "genre_desc" : "genre";
             ViewBag.PriceSortParam = sortOrder == "price" ? "price_desc" : "price";
-            
+
             //   LINQ query to select the movies - only defined; has not been ran against the database
             // LINQ (https://msdn.microsoft.com/en-us/library/mt693024.aspx)
             // Make sure you include System.Linq
@@ -42,13 +42,21 @@ namespace MvcMovie.Controllers
                 movies = movies.Where(x => x.Genre == movieGenre);
             }
 
+            //  Use LINQ to get  list of genre's
+            IQueryable<string> genreQuery = from m in db.Movies
+                                            select m.Genre;
+
+            var movieGenreVM = new MovieGenericViewModel();
+            movieGenreVM.genres = new SelectList(genreQuery.Distinct().ToList());
+            
+
             //  Case switch on sorting order
             switch (sortOrder)
             {
                 case "title_desc":
                     movies = movies.OrderByDescending(s => s.Title);
                     break;
-                case "Date":
+                case "date":
                     movies = movies.OrderBy(s => s.ReleaseDate);
                     break;
                 case "date_desc":
@@ -72,14 +80,8 @@ namespace MvcMovie.Controllers
                 
             }
 
-            //  Use LINQ to get  list of genre's
-            IQueryable<string> genreQuery = from m in db.Movies
-                                            select m.Genre;
-
-            var movieGenreVM = new MovieGenericViewModel();
-            movieGenreVM.genres = new SelectList(genreQuery.Distinct().ToList());
             movieGenreVM.movies = movies.ToList();
-            
+
             return View(movieGenreVM);
         }
 
@@ -141,7 +143,7 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public ActionResult Edit([Bind(Include = "ID,Title,ReleaseDate,Genre,Price,Raiting")] Movie movie)
         {
             if (ModelState.IsValid)
             {
